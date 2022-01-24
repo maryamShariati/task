@@ -5,7 +5,6 @@ import ir.chica.task.exception.RecordNotFoundException;
 import ir.chica.task.model.User;
 import ir.chica.task.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

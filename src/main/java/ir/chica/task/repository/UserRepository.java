@@ -11,12 +11,9 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends CrudRepository<User,Long> {
 
-    @Query(value = "FROM Task WHERE id = :id")
-    Optional<User> findById(@Param("id")Long id);
 
-    @Query(value = "FROM Task WHERE  username = :username " )
+    @Query(value = "FROM User WHERE  username = :username " )
         Optional<User>findByUsername(@Param("username")String username);
-
 
     Optional<User> findByIdAndDeletedFalse(Long id);
 }

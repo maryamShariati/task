@@ -25,7 +25,7 @@ public class TaskService {
     }
 
     public void deleteById(Long id) throws RecordNotFoundException{
-        Task task=taskRepository.findById(id).orElseThrow(RecordNotFoundException::new);
+        Task task=taskRepository.findById(id).orElseThrow(()->RecordNotFoundException);
         task.setDeleted(true);
         taskRepository.save(task);
     }
