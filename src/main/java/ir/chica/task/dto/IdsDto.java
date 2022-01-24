@@ -6,3 +6,4 @@ import java.util.List;
 
 public record IdsDto(@JsonProperty("ids") List<Long> ids) {
 }
+
