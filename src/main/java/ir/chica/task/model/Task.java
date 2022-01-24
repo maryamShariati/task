@@ -7,7 +7,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
-
 @Entity
 @Setter
 @Getter
@@ -23,6 +22,7 @@ public class Task {
     private Date updateAt;
     private Date deleteAt;
     private Date done;
+    @Column(nullable = false)
     private boolean deleted;
 
     @ManyToOne(optional = false,cascade = CascadeType.ALL,fetch = FetchType.LAZY)
@@ -42,7 +42,6 @@ public class Task {
 //        task.setDone(date);
 //        return task;
 //    }
-
 
 
 
