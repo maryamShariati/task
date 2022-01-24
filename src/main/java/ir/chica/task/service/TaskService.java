@@ -30,17 +30,18 @@ public class TaskService {
         taskRepository.save(task);
     }
     public void updateNameById(Long id,String name) throws RecordNotFoundException{
-        Task task=taskRepository.findById(id).orElseThrow(RecordNotFoundException::new);
-        task.setName(name);
-        taskRepository.save(task);
+       taskRepository.updateName(id,name);
     }
 //    public void updateTime(Long id, Date date){
 //      Task task=taskRepository.findById(id).orElseThrow(RecordNotFoundException::new);
 //    }
 
-    public void updateTime(IdsDto id){
-        taskRepository.updateTime(id);
+    public void updateDone(IdsDto id){
+        taskRepository.updateDone(id);
+    }
 
+    public void updateDeleted(Long id){
+        taskRepository.updateDeletedAt(id);
     }
 
     public Optional<Task> getById(Long id) {

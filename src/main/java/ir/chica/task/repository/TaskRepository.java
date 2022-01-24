@@ -22,7 +22,7 @@ public interface TaskRepository extends CrudRepository<Task,Long> {
 
     @Modifying
     @Query("update Task task set task.done=current_timestamp where task.id IN :ids")
-    void updateTime(@Param("ids") IdsDto ids);
+    void updateDone(@Param("ids") IdsDto ids);
 
     @Modifying
     @Query("update Task task set task.deleteAt= :deleteAt where task.id= :id")
