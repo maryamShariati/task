@@ -35,13 +35,16 @@ public class Task {
         task.setCreateAt(taskDto.createAt());
         return task;
     }
-//    public static Task TimeMoment(){
-//        Date date = new Date();
-//        Task task=new Task();
-//        System.out.println(date.toString());
-//        task.setDone(date);
-//        return task;
-//    }
+
+    @PrePersist
+    public void prePersist() {
+        this.setCreateAt(new Date());
+    }
+
+    @PreUpdate
+    public void preUpdate(){
+       this.setUpdateAt(new Date());
+    }
 
 
 

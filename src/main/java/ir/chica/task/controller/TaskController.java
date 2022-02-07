@@ -6,17 +6,20 @@ import ir.chica.task.exception.RecordNotFoundException;
 import ir.chica.task.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import javax.validation.Valid;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/task")
+@Validated
 public class TaskController {
 
     private final TaskService service;
 
     @PostMapping("/save")
-    public void save(@RequestBody TaskDto taskDto) {
+    public void save(@RequestBody @Valid TaskDto taskDto) {
         service.save(taskDto);
     }
 
@@ -36,13 +39,13 @@ public class TaskController {
     }
 
     @PutMapping("/update")
-    public void updateDone(@RequestBody IdsDto idsDto) {
+    public void updateDone(@RequestBody @Valid IdsDto idsDto) {
         service.updateDone(idsDto);
     }
 
 
     @PatchMapping("/update/{id}")
-    public  void updateDeleteAt(@PathVariable Long id){
+    public  void updateDeleteAt(@PathVariable Long id) throws RecordNotFoundException {
         service.updateDeleted(id);
     }
 }

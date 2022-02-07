@@ -19,37 +19,33 @@ public class TaskService {
     private final TaskRepository taskRepository;
 
 
-    public void save(TaskDto taskDto){
+    public void save(TaskDto taskDto) {
 
         taskRepository.save(Task.fromTaskDto(taskDto));
     }
 
-    public void deleteById(Long id) throws RecordNotFoundException{
-        Task task=taskRepository.findById(id).orElseThrow(()->RecordNotFoundException);
+    public void deleteById(Long id) throws RecordNotFoundException {
+        Task task = taskRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("record not found"));
         task.setDeleted(true);
         taskRepository.save(task);
     }
-    public void updateNameById(Long id,String name){
-        taskRepository.updateName(id,name);
-    }
-//    public void updateTime(Long id, Date date){
-//      Task task=taskRepository.findById(id).orElseThrow(RecordNotFoundException::new);
-//    }
 
-    public void updateDone(IdsDto id){
-        taskRepository.updateDone(id);
-    }
-
-    public void updateDeleted(Long id){
+    public void updateDeleted(Long id) throws RecordNotFoundException {
         taskRepository.updateDeletedAt(id);
     }
 
-    public Optional<Task> getById(Long id) {
+    public void updateNameById(Long id, String name) {
+        taskRepository.updateName(id, name);
+    }
 
-        return taskRepository.findByIdAndDeletedFalse(id);
+    public void updateDone(IdsDto id) {
+        taskRepository.updateDone(id);
     }
 
 
+    public Optional<Task> getById(Long id) {
+        return taskRepository.findByIdAndDeletedFalse(id);
+    }
 
 
 }

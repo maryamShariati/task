@@ -9,11 +9,17 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends CrudRepository<User,Long> {
+public interface UserRepository extends CrudRepository<User, Long> {
+
+    @Query(value = "FROM User WHERE  username = :username ")
+    Optional<User> findByUsername(@Param("username") String username);
+
+    Optional<User> findByIdAndDeletedFalse(@Param("id") Long id);
 
 
-    @Query(value = "FROM User WHERE  username = :username " )
-        Optional<User>findByUsername(@Param("username")String username);
+    Optional<User> findByUsernameAndDeletedIsFalse(String username);
 
-    Optional<User> findByIdAndDeletedFalse(Long id);
+
+
+
 }

@@ -26,14 +26,12 @@ public interface TaskRepository extends CrudRepository<Task,Long> {
     @Query("update Task task set task.deleteAt= :deleteAt where task.id= :id")
     void updateDeletedAt(@Param("id") Long id);
 
-    @Query(value = "select * from task as t INNER JOIN user as u on t.user_id = u.id where u.id= :userId",nativeQuery = true)
+    @Query(value = "select t.* from task as t INNER JOIN user as u on t.user_id = u.id where u.id= :userId",nativeQuery = true)
     List<Task> findTaskByUserId(Long userId);
 
     @Query("select task from Task task where task.done is null or task.deleted=false ")
     List<Task> findAllInPrecess();
 
-    Optional<Task>findByIdAndDeletedFalse(Long id);
-
-
+    Optional<Task>findByIdAndDeletedFalse(@Param("id") Long id);
 
 }

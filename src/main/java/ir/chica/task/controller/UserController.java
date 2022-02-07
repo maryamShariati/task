@@ -1,23 +1,27 @@
 package ir.chica.task.controller;
 
+import ir.chica.task.dto.SerializeDto;
 import ir.chica.task.dto.UserDto;
 import ir.chica.task.exception.RecordNotFoundException;
 import ir.chica.task.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.io.IOException;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/user")
-
-
+@Validated
 public class UserController {
     private final UserService userService;
 
     @PostMapping("/save")
-    public void save(@RequestBody UserDto userDto){
-        userService.save(userDto);
+    public void save(@RequestBody @Valid SerializeDto serializeDto) throws IOException {
+        userService.save(serializeDto);
     }
 
     @PatchMapping("/update/{username}/{password}")
