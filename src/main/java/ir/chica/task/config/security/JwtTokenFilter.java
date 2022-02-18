@@ -2,8 +2,11 @@ package ir.chica.task.config.security;
 
 import ir.chica.task.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -19,9 +22,9 @@ import static org.springframework.util.ObjectUtils.isEmpty;
 
 @Component
 @RequiredArgsConstructor
-public class TokenFilter extends OncePerRequestFilter {
+public class JwtTokenFilter extends OncePerRequestFilter {
 
-    private final TokenUtil tokenUtil;
+    private final JwtTokenUtil tokenUtil;
     private final UserRepository userRepository;
 
 
@@ -32,6 +35,7 @@ public class TokenFilter extends OncePerRequestFilter {
             chain.doFilter(request, response);
             return;
         }
+
 
         String token = String.valueOf(header.split(" "));
         //loop( for,foreach) nist
@@ -45,23 +49,20 @@ public class TokenFilter extends OncePerRequestFilter {
 
 
 
-//        UserDetails userDetails= (UserDetails) repository.findByUsername("username").orElse(null);
-//
-//        UsernamePasswordAuthenticationToken
-//                authentication = new UsernamePasswordAuthenticationToken(
-//                userDetails, null,
-//                userDetails == null ? List.of() : userDetails.getAuthorities()
-//        );
-//
-//        authentication.setDetails(
-//                new WebAuthenticationDetailsSource().buildDetails(request)
-//        );
-//
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-//        filterChain.doFilter(request, response);
-//    }
+        UserDetails userDetails= userRepository.findByUsername("username").orElse(null);
 
+        UsernamePasswordAuthenticationToken
+                authentication = new UsernamePasswordAuthenticationToken(
+                userDetails, null,
+                userDetails == null ? List.of() : userDetails.getAuthorities()
+        );
 
+        authentication.setDetails(
+                new WebAuthenticationDetailsSource().buildDetails(request)
+        );
 
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        chain.doFilter(request, response);
     }
-}
+    }
+

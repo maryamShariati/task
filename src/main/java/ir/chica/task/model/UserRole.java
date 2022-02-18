@@ -10,9 +10,9 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class UserRole {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,4 +30,18 @@ public class UserRole {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "role_id")
     private Role role;
+
+
+    @Override
+    public  boolean equals(Object object){
+        if (object==null || this.getClass() != object.getClass()){
+            return false;
+        }if ((this.getId() != null)){
+
+            UserRole userRole= (UserRole) object;
+            return (this.getId().equals(userRole.getId()));
+        }else {
+            return false;
+        }
+    }
 }

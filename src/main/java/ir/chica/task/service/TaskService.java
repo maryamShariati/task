@@ -6,6 +6,8 @@ import ir.chica.task.exception.RecordNotFoundException;
 import ir.chica.task.model.Task;
 import ir.chica.task.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,11 +19,15 @@ import java.util.Optional;
 
 public class TaskService {
     private final TaskRepository taskRepository;
+    private final UserService userService;
 
 
-    public void save(TaskDto taskDto) {
-
-        taskRepository.save(Task.fromTaskDto(taskDto));
+    public void persist(String taskName) throws UsernameNotFoundException {
+        var task = new Task(taskName);
+        var username = SecurityContextHolder.getContext().getAuthentication().getName();
+        var user = userService.getUserByUsername(username);
+        task.setMember(user);
+        taskRepository.save(task);
     }
 
     public void deleteById(Long id) throws RecordNotFoundException {

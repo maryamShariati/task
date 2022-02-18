@@ -1,6 +1,7 @@
 package ir.chica.task.model;
 
 import ir.chica.task.dto.TaskDto;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,12 +30,9 @@ public class Task {
     @JoinColumn(name = "user_id",referencedColumnName = "id")
     private User member;
 
-    public static Task fromTaskDto(TaskDto taskDto){
-        Task task=new Task();
-        task.setName(taskDto.name());
-        task.setCreateAt(taskDto.createAt());
-        return task;
+    public Task(String taskName) {
     }
+
 
     @PrePersist
     public void prePersist() {

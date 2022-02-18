@@ -2,14 +2,17 @@ package ir.chica.task.model;
 
 import ir.chica.task.dto.SerializeDto;
 import ir.chica.task.dto.UserDto;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import ir.chica.task.enumTest.Gender;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -17,7 +20,10 @@ import java.util.List;
 @Getter
 @Table(name = "app_user")
 @NoArgsConstructor
-public class User {
+@AllArgsConstructor
+@Access(AccessType.FIELD)
+@Builder
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(unique = true)
@@ -26,10 +32,16 @@ public class User {
     private String username;
     @Column(nullable = false)
     private String password;
+    //    @SexAnnotation
+    @NotBlank
+    private Gender sex;
     private boolean deleted;
 
     @OneToMany(mappedBy = "member")
     private List<Task> tasks;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<UserRole> userRoles;
 
 
     public static User fromUserDto(UserDto userDto) {
@@ -37,15 +49,6 @@ public class User {
         user.setUsername(userDto.username());
         user.setPassword(userDto.password());
         return user;
-    }
-
-    public static void save(SerializeDto serializeDto) throws IOException {
-        Serialization serialize1=new Serialization(Math.toIntExact(serializeDto.id()),serializeDto.username(),serializeDto.password());
-        FileOutputStream stash =new FileOutputStream("f.txt");
-        ObjectOutputStream out=new ObjectOutputStream(stash);
-        out.writeObject(serialize1);
-        out.close();
-        System.out.println("success");
     }
 
     @Override
@@ -59,5 +62,30 @@ public class User {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
     }
 }

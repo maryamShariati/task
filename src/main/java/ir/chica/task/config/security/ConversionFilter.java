@@ -9,6 +9,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
 
 
@@ -27,5 +28,29 @@ public class ConversionFilter extends OncePerRequestFilter {
         header.replace("ة","ت");
         filterChain.doFilter(request,response);
 
+//        **********************************
+
+        StringBuilder stringBuilder = new StringBuilder();
+        BufferedReader bufferedReader = request.getReader();
+        String line = bufferedReader.readLine();
+        while (line != null) {
+            stringBuilder.append(line);
+            stringBuilder.append(System.lineSeparator());
+        }
+
+        var jsonData = bufferedReader.toString();
+        var attributes=jsonData.substring(1,jsonData.length()-1).split(",");
+
+        for (String attribute:attributes) {
+            var value=  attribute.split(":");
+            if (value[1].contains("ة")){
+                var newValue=value[1].replace("ة","ت");
+                request.setAttribute(value[0],newValue);
+            }
+        }
+        filterChain.doFilter(request,response);
+
     }
+
+
 }

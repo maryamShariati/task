@@ -22,12 +22,10 @@ public class PhoneNumberValidator implements ConstraintValidator<PhoneNumber,Str
             phone = s.replace("0098", "09");
         }
 
-        if (phone.equals("09") && phone.length() == 11) {
+        if (phone.startsWith("09") && phone.length() == 11) {
             return true;
         }else {
             return false;
         }
-
         }
-
     }

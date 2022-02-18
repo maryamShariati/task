@@ -20,8 +20,8 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/save")
-    public void save(@RequestBody @Valid SerializeDto serializeDto) throws IOException {
-        userService.save(serializeDto);
+    public void save(@RequestBody @Valid UserDto userDto) throws IOException {
+        userService.save(userDto);
     }
 
     @PatchMapping("/update/{username}/{password}")
