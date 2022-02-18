@@ -36,17 +36,12 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             return;
         }
 
+       String[]  split=header.split("");
 
-        String token = String.valueOf(header.split(" "));
-        //loop( for,foreach) nist
-        //size nist
-
-        if (header.length() < 2 || !tokenUtil.validate(token)) {
+        if (header.length() < 2 || !tokenUtil.validate(split[1])) {
             chain.doFilter(request, response);
             return;
         }
-        token = header.split("")[1].trim();
-
 
 
         UserDetails userDetails= userRepository.findByUsername("username").orElse(null);
