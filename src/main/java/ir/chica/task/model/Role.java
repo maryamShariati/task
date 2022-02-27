@@ -31,6 +31,9 @@ public class Role {
     @OneToMany(mappedBy = "role")
     private List<UserRole> userRoles;
 
+    public Role(RoleEnum main, String category, Object name) {
+    }
+
 
     public static Role fromDto(RoleDto roleDto) {
         Role role = new Role();

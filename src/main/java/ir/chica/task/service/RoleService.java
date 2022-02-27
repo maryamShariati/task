@@ -21,10 +21,16 @@ public class RoleService {
 
     private final RoleRepository repository;
 
-    public void saveRole(RoleDto roleDto){
+//    public void saveRole(RoleEnum main, String category, Object name){
+//        Role role=new Role(main,category,name);
+//        repository.save(role);
+//
+//    }
+    public void saveRole(RoleDto roleDto) {
         repository.save(Role.fromDto(roleDto));
-
     }
+
+
     public List<Role> getAllRoleByUserId(Long userId){
         return new ArrayList<>(repository.getAllRoleByUserId(userId));
     }
